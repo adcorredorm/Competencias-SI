@@ -193,70 +193,18 @@ public class ThunderCats implements AgentProgram {
              */
             for(int i = LEFT; i >= FRONT; i--){
                 if(!actualPercept[i]){
-                    switch (direction){
+                    switch ((direction + i)%4){
                         case FRONT:
-                            switch (i){
-                                case FRONT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
-                                    break;
-                                case RIGHT:
-                                    aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
-                                    break;
-                                case BACK:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
-                                    break;
-                                case LEFT:
-                                    aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
-                                    break;
-                            }
+                            aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
                             break;
                         case RIGHT:
-                            switch (i){
-                                case LEFT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
-                                    break;
-                                case FRONT:
-                                    aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
-                                    break;
-                                case RIGHT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
-                                    break;
-                                case BACK:
-                                    aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
-                                    break;
-                            }
+                            aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
                             break;
                         case BACK:
-                            switch (i){
-                                case BACK:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
-                                    break;
-                                case LEFT:
-                                    aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
-                                    break;
-                                case FRONT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
-                                    break;
-                                case RIGHT:
-                                    aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
-                                    break;
-                            }
+                            aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
                             break;
                         case LEFT:
-                            switch (i){
-                                case RIGHT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
-                                    break;
-                                case BACK:
-                                    aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
-                                    break;
-                                case LEFT:
-                                    aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
-                                    break;
-                                case FRONT:
-                                    aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
-                                    break;
-                            }
+                            aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
                             break;
                     }
                 }
