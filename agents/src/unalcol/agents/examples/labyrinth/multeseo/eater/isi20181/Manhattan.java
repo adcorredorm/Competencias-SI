@@ -1,6 +1,6 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181;
 
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.Heuristica;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.Heuristica;
 
 public class Manhattan implements Heuristica<Coordinate> {
 
@@ -11,12 +11,12 @@ public class Manhattan implements Heuristica<Coordinate> {
 
     @Override
     public double estimar(Coordinate estado) {
-        double min = 15 * 15; //TODO: Revisar
+        double max = 0; //TODO: Revisar
         int x = estado.x();
         int y = estado.y();
         for(Coordinate c : target.set){
-            min = Math.min(min, Math.abs(c.x() - x) + Math.abs(c.y() - y));
+            max = Math.max(max, Math.abs(c.x() - x) + Math.abs(c.y() - y));
         }
-        return min;
+        return max;
     }
 }

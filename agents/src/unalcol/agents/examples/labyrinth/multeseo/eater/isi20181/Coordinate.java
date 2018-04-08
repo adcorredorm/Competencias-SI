@@ -1,4 +1,4 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181;
 
 public class Coordinate{
 

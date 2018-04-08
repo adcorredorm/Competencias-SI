@@ -1,6 +1,6 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181;
 
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.Goal;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.Goal;
 
 import java.util.Collection;
 import java.util.Vector;

@@ -1,6 +1,6 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.DataStructures;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.DataStructures;
 
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.Arco;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.Arco;
 
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda;
 
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.DataStructures.ColeccionBusqueda;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.DataStructures.ColeccionBusqueda;
 
 public class DFSIterado<T> extends Busqueda<T>{
 

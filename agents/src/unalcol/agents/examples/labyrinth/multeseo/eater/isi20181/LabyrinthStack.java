@@ -1,33 +1,37 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181;
 
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.Heuristica;
-import unalcol.types.collection.vector.Vector;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.Heuristica;
+import java.util.Vector;
 
 public class LabyrinthStack extends Vector<Coordinate> {
+
+    /*
+     * Creo que esta clase ya no sirve para nada, pero la dejo aca por si acaso :P
+     */
 
     protected Heuristica<Coordinate> heuristica;
     private Coordinate aux;
 
     public Coordinate pop(){
-        aux = this.get(size-1);
-        this.remove(size-1);
+        aux = this.get(size()-1);
+        this.remove(size()-1);
         return aux;
     }
 
     public Coordinate peek(){
-        return this.get(size-1);
+        return this.get(size()-1);
     }
 
     public void reorder(Heuristica<Coordinate> heuristica){
         this.heuristica = heuristica;
-        for(int i = 0; i < size; i++){
+        for(int i = 0; i < size(); i++){
             System.out.print(heuristica.estimar(get(i)) + " ");
         }
         System.out.println();
 
-        quicksort(0, size - 1);
+        quicksort(0, size() - 1);
 
-        for(int i = 0; i < size; i++){
+        for(int i = 0; i < size(); i++){
             System.out.print(heuristica.estimar(get(i)) + " ");
         }
         System.out.println('\n');

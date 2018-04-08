@@ -1,10 +1,10 @@
-package unalcol.agents.examples.labyrinth.multeseo.eater.agente;
+package unalcol.agents.examples.labyrinth.multeseo.eater.isi20181;
 
 import unalcol.agents.Action;
 import unalcol.agents.AgentProgram;
 import unalcol.agents.Percept;
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.AStar;
-import unalcol.agents.examples.labyrinth.multeseo.eater.agente.busqueda.Accion;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.AStar;
+import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.busqueda.Accion;
 import unalcol.agents.simulate.util.SimpleLanguage;
 
 import java.util.*;
@@ -58,10 +58,11 @@ public class ThunderCats implements AgentProgram {
     private Coordinate coordinate;
     private HashSet<Coordinate> food;
     private HashMap<String, Vector<Coordinate>> graph;
+    private String returnedAction;
 
     private boolean[] actualPercept;
     private Vector<Coordinate> aux;
-    private LabyrinthStack stack;
+    private HashSet<Coordinate> stack;
     private DirectedPath foodPath;
     private DirectedPath explorationPath;
 
@@ -73,8 +74,9 @@ public class ThunderCats implements AgentProgram {
         actualPercept = new boolean[11];
         food = new HashSet<>();
         graph = new HashMap<>();
-        stack = new LabyrinthStack();
+        stack = new HashSet<>();
         explorationPath = new DirectedPath(new int[0]);
+        foodPath = new DirectedPath(new int[0]);
     }
 
     private void moveAbsolute(int pos){
@@ -138,27 +140,33 @@ public class ThunderCats implements AgentProgram {
             }
         }
     }
+
+    private void graphPrint(){
+        for(int i = -14; i <= 14; i++){ // Grafo explorado al completo
+            for(int j = 14; j >= -14; j--){
+                if(graph.containsKey(i + "," + j)){
+                    Vector<Coordinate> value = graph.get(i + "," + j);
+                    System.out.print("{(" + i + "," + j + ") -> {");
+                    for(int k = 0; k < value.size()-1; k++){
+                        System.out.print("(" + value.get(k).toString() + "),");
+                    }
+                    System.out.println("(" + value.get(value.size()-1).toString() + ")}}");
+                }
+            }
+        }
+    }
     /****/
 
     @Override
     public Action compute(Percept p) {
 
+        /* Comprobamos si ya llegamos a la meta */
         if((Boolean)p.getAttribute(this.language.getPercept(goal))){
-            for(int i = -14; i <= 14; i++){ // Grafo explorado al completo
-                for(int j = 14; j >= -14; j--){
-                    if(graph.containsKey(i + "," + j)){
-                        Vector<Coordinate> value = graph.get(i + "," + j);
-                        System.out.print("{(" + i + "," + j + ") -> {");
-                        for(int k = 0; k < value.size()-1; k++){
-                            System.out.print("(" + value.get(k).toString() + "),");
-                        }
-                        System.out.println("(" + value.get(value.size()-1).toString() + ")}}");
-                    }
-                }
-            }
+            //graphPrint();
             return new Action(language.getAction(1));
         }
-        /* Esto podria no ser necesario */
+
+        /* Extraccion de la percepcion */
 
         actualPercept[wf] = (Boolean)p.getAttribute(this.language.getPercept(wf));
         actualPercept[wr] = (Boolean)p.getAttribute(this.language.getPercept(wr));
@@ -166,31 +174,36 @@ public class ThunderCats implements AgentProgram {
         actualPercept[wl] = (Boolean)p.getAttribute(this.language.getPercept(wl));
 
         //actualPercept[goal] = (Boolean)p.getAttribute(this.language.getPercept(goal));
-        actualPercept[fail] = (Boolean)p.getAttribute(this.language.getPercept(fail));
+        //TODO: No se me ocurre que hacer con fail
+        //actualPercept[fail] = (Boolean)p.getAttribute(this.language.getPercept(fail));
 
         actualPercept[af] = (Boolean)p.getAttribute(this.language.getPercept(af));
-        actualPercept[ar] = (Boolean)p.getAttribute(this.language.getPercept(ar));
+        //TODO: No se me ocurre como usar la percepcion de otro agente salvo que me este bloqueando el paso
+        /*actualPercept[ar] = (Boolean)p.getAttribute(this.language.getPercept(ar));
         actualPercept[ab] = (Boolean)p.getAttribute(this.language.getPercept(ab));
-        actualPercept[al] = (Boolean)p.getAttribute(this.language.getPercept(al));
+        actualPercept[al] = (Boolean)p.getAttribute(this.language.getPercept(al));*/
 
         actualPercept[res] = (Boolean)p.getAttribute(this.language.getPercept(res));
-        /* -- */
 
-        if(actualPercept[res]){//TODO: Mover al final
+        /* Se comprueba si se puede comer para siepre estar a full */
+
+        if(actualPercept[res]){
             food.add(coordinate);
-            if(energylv != (int) p.getAttribute(ENERGY_LEVEL)) comands.add(0, language.getAction(4));
+            if(energylv != (int) p.getAttribute(ENERGY_LEVEL)){
+                energylv = (int) p.getAttribute(ENERGY_LEVEL);
+                return new Action(language.getAction(4));
+            }
         }
         energylv = (int) p.getAttribute(ENERGY_LEVEL);
 
-        ///****/if(actualPercept[fail]) comands.clear();
+        //if(actualPercept[fail]) comands.clear(); //TODO: No se si dejar esto xD
+
+        /* Creacion del grafo */
 
         if(!graph.containsKey(coordinate.toString())){
             aux = new Vector<>(4);
-            /* Creacion del grafo:
-             * Como la percepcion es relativa a la direccion del agente, pero el grafo
-             * se construye con respecto a las coordenadas, es necesario realizar el ajuste.
-             * El +4 es para corregir la operacion modulo cuando es negativa
-             */
+             /* Como la percepcion es relativa a la direccion del agente, pero el grafo se construye con respecto a las coordenadas,
+              *  es necesario revisar a que corresponde la percepcion con respecto al tablero. */
             for(int i = LEFT; i >= FRONT; i--){
                 if(!actualPercept[i]){
                     switch ((direction + i)%4){
@@ -209,47 +222,44 @@ public class ThunderCats implements AgentProgram {
                     }
                 }
             }
-            /*
+            /* esta es otra forma de connstruir el grafo, insertando las percepciones en distinto orden
             if(!actualPercept[(wl - direction + 4)%4]) aux.add(new Coordinate(coordinate.x() - 1, coordinate.y()));
             if(!actualPercept[(wb - direction + 4)%4]) aux.add(new Coordinate(coordinate.x(), coordinate.y() - 1));
             if(!actualPercept[(wr - direction + 4)%4]) aux.add(new Coordinate(coordinate.x() + 1, coordinate.y()));
             if(!actualPercept[(wf - direction + 4)%4]) aux.add(new Coordinate(coordinate.x(), coordinate.y() + 1));
             */
-
             for(Coordinate c: aux){
-                if(!graph.containsKey(c.toString())) stack.add(c); //TODO: Simplificar ese super-case
+                if(!graph.containsKey(c.toString())) stack.add(c);
             }
             graph.put(coordinate.toString(), aux);
         }
 
-        if(energylv < 0 && !food.isEmpty()){ //Disabled
-            if(foodPath == null || !foodPath.hasNext()) foodPath = new DirectedPath(goTo(food));
-            else moveAbsolute(foodPath.getAction()); //TODO: cuando va a buscar comida necesita reordenar la pila
+        /*Busca la fuente de comida mas cercana cuando este en niveles criticos */
+
+        if(energylv < 15 && !food.isEmpty()){
+            if(!foodPath.hasNext()) foodPath = new DirectedPath(goTo(food));
+            moveAbsolute(foodPath.getAction());
         }
+
+        /* SI no tiene nada mas que hacer explore xD */
 
         if(comands.isEmpty()){
             if(!explorationPath.hasNext()){
-                while(graph.containsKey(stack.peek().toString())) stack.pop(); //Da errores cuando va a lugares ya visitados
-                Coordinate c = stack.peek();
-                int[] w = goTo(c);
-                if(w.length > 4){
-                    stack.reorder(new Manhattan(new MultiTarget(coordinate)));
-                    if(!c.equals(stack.peek()))w = goTo(stack.peek()); //en caso de que no se halla modificado, no es necesario hacer denuevo la busqueda
-                }
-                explorationPath.reset(w);
-                stack.pop();//TODO: working in...
+                stack.remove(coordinate); // No se si esta sea la mejor forma de de remover los visitados ...
+                explorationPath.reset(goTo(stack));
             }
             moveAbsolute(explorationPath.getAction());
         }
 
 
-        /*-------------------------------------*/
-        String action = comands.get(0);
+        /* Ejecucion de la accion */
+        returnedAction = comands.get(0);
+        comands.remove(0);
 
-        if(action.equals("rotate")){
+        if(returnedAction.equals("rotate")){
             direction = (direction + 1)%4;
-        }else if(action.equals("advance")){
-            if(actualPercept[af]) return new Action(language.getAction(0)); //TODO: Ojo si se muere un agente al frente mio
+        }else if(returnedAction.equals("advance")){
+            if(actualPercept[af]) return new Action(language.getAction(0)); //TODO: Ojo si se muere un agente al frente, o el no puede salir
             //System.out.println("(" + coordinate.x() + "," + coordinate.y() + ")");
             switch (direction){
                 case FRONT: coordinate.yUp(); break;
@@ -258,14 +268,11 @@ public class ThunderCats implements AgentProgram {
                 case LEFT: coordinate.xDown(); break;
             }
         }
-        comands.remove(0);
-        return new Action(action);
+        return new Action(returnedAction);
     }
 
     @Override
     public void init() {
-        // ?? Donde se usa init??
-        this.comands = new Vector<>();
-        this.direction = FRONT;
+
     }
 }
