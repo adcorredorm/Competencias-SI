@@ -9,6 +9,10 @@ import unalcol.agents.simulate.util.SimpleLanguage;
 
 import java.util.*;
 
+//TODO 1. Establecer enegía maxima
+//TODO 2. Cambiar HashMap por LinkedHashMap
+//TODO Rexes (Prioriza a la derecha)
+//TODO ¿Vale la pena calcular el costo de avanzar y rotar?
 
 public class ThunderCats implements AgentProgram {
 
