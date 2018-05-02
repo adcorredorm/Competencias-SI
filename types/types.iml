@@ -7,10 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="module" module-name="random" />
-    <orderEntry type="module" module-name="services" />
-    <orderEntry type="module" module-name="primitives" />
     <orderEntry type="module" module-name="defs" />
+    <orderEntry type="module" module-name="primitives" />
+    <orderEntry type="module" module-name="services" />
   </component>
 </module>

@@ -4,7 +4,12 @@ import unalcol.agents.Agent;
 import unalcol.agents.AgentProgram;
 import unalcol.agents.examples.labyrinth.Labyrinth;
 import unalcol.agents.examples.labyrinth.LabyrinthDrawer;
-import unalcol.agents.examples.labyrinth.multeseo.eater.isi20181.thunderCats.ThunderCats;
+import unalcol.agents.examples.labyrinth.multeseo.eater.SIS20181.Retoricos.MiAgente;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.FutureUN.TeseoUNfuture;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.RexeSiLaberinto.MyAgent;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.UNfail.UNfailAgentProgram;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.mandingas.Mandingas_agent;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.ThunderCats;
 import unalcol.agents.simulate.util.SimpleLanguage;
 import unalcol.types.collection.vector.Vector;
 
@@ -18,17 +23,27 @@ public class MultiTeseoEaterMain {
 
 	  public static void main( String[] argv ){
 	     AgentProgram[] teseo = new AgentProgram[12];
-	    int index1 = 0;
-	    int index2 = 1;
-	    teseo[index1] = new ThunderCats( getLanguage() );
-	    teseo[index2] = new ThunderCats( getLanguage() );
+	    int futureun = 0;
+	    int mandingas = 1;
+	    int retoricos = 2;
+	    int rexes = 3;
+	    int thundercats = 4;
+	    int unfail = 5;
+
+	    teseo[futureun] = new TeseoUNfuture( getLanguage() );
+	    teseo[mandingas] = new Mandingas_agent( getLanguage() );
+	    teseo[retoricos] = new MiAgente( getLanguage() );
+	    teseo[rexes] = new MyAgent( getLanguage() );
+	    teseo[thundercats] = new ThunderCats( getLanguage() );
+	    teseo[unfail] = new UNfailAgentProgram( );
+
 
 	    LabyrinthDrawer.DRAW_AREA_SIZE = 1000;
 	    LabyrinthDrawer.CELL_SIZE = 50;
 	    Labyrinth.DEFAULT_SIZE = 15;
 	    
-	    Agent agent1 = new Agent(teseo[index1]);    
-	    Agent agent2 = new Agent(teseo[index2]);
+	    Agent agent1 = new Agent(teseo[thundercats]);
+	    Agent agent2 = new Agent(teseo[retoricos]);
 	    
 	    //Agent agent3 = new Agent(p3);
 	    Vector<Agent> agent = new Vector<Agent>();
