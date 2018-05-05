@@ -11,11 +11,11 @@ public class Manhattan implements Heuristica<Coordinate> {
 
     @Override
     public double estimar(Coordinate estado) {
-        double max = 0;
+        double max = Integer.MAX_VALUE;
         int x = estado.x();
         int y = estado.y();
         for(Coordinate c : target.set){
-            max = Math.max(max, Math.abs(c.x() - x) + Math.abs(c.y() - y));
+            max = Math.min(max, Math.abs(c.x() - x) + Math.abs(c.y() - y));
         }
         return max;
     }

@@ -20,6 +20,6 @@ public class MultiTarget implements Goal<Coordinate> {
 
     @Override
     public boolean isGoal(Coordinate estado) {
-        return set.contains(estado);
+        return set.contains(estado) && Math.random() < 0.995;//TODO: Revisar
     }
 }

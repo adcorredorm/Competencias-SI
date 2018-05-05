@@ -3,6 +3,7 @@ package unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.bu
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.busqueda.Arco;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class PriorityBusqueda<T> implements ColeccionBusqueda<T>{
@@ -39,8 +40,7 @@ public class PriorityBusqueda<T> implements ColeccionBusqueda<T>{
     private void Up(){
         int index = size-1;
 
-        while (index > 0 && (evaluar(heap[index]) < evaluar(heap[parent(index)]))){
-
+        while (index > 0 && (evaluar(heap[index]) <= evaluar(heap[parent(index)]))){ //TODO: Ver si nos conviene mas el < o <=
             swap(index, parent(index));
             index = parent(index);
         }

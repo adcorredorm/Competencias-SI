@@ -6,6 +6,7 @@ public abstract class ListaBusqueda<T> implements ColeccionBusqueda<T> {
     protected class Nodo<T>{
         protected Arco<T> arco;
         protected Nodo<T> next;
+        protected double valor;
     }
 
     protected Nodo<T> head = null;

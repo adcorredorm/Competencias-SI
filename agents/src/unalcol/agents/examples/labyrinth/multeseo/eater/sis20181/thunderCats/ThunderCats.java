@@ -9,10 +9,16 @@ import unalcol.agents.simulate.util.SimpleLanguage;
 
 import java.util.*;
 
-//TODO 1. Establecer enegía maxima
-//TODO 2. Cambiar HashMap por LinkedHashMap
 //TODO Rexes (Prioriza a la derecha)
 //TODO ¿Vale la pena calcular el costo de avanzar y rotar?
+
+/* Cambios Hechos
+* Modificacion de la Heuristica Manhattan (Manhattan)
+* graph ahora es un linkedHashMap (Como no se cambia la estructura de datos de A* sigue sin tener un orden estricto, pero como se cambio la Heuristica, tiene mejores resultados) (Thundercats)
+* Se agrega una probabilidad para que no reconozca un estado como estado objetivo (solo del 0.05%) (Multitarget)
+* Se deja un costo uniforme para el desplazamiento hacia cualquier direccion (Succesors)
+* Se guarda el maximo de energia (solo para calcular el nivel de hambre (< 40%))(Thundercats)
+ */
 
 public class ThunderCats implements AgentProgram {
 
@@ -56,13 +62,17 @@ public class ThunderCats implements AgentProgram {
     private final static int res = 10;
     private final static String ENERGY_LEVEL = "energy_level";
 
+
     private SimpleLanguage language;
     private Vector<String> comands;
-    private int direction, energylv;
+    private int direction, energylv, maxenergy;
     private Coordinate coordinate;
     private HashSet<Coordinate> food;
-    private HashMap<String, Vector<Coordinate>> graph;
+    private HashSet<Coordinate> badfood;
+    private LinkedHashMap<String, Vector<Coordinate>> graph;
     private String returnedAction;
+
+    private boolean hungry;
 
     private boolean[] actualPercept;
     private Vector<Coordinate> aux;
@@ -77,10 +87,12 @@ public class ThunderCats implements AgentProgram {
         coordinate = new Coordinate(0, 0);
         actualPercept = new boolean[11];
         food = new HashSet<>();
-        graph = new HashMap<>();
+        badfood = new HashSet<>();
+        graph = new LinkedHashMap<>();
         stack = new HashSet<>();
         explorationPath = new DirectedPath(new int[0]);
         foodPath = new DirectedPath(new int[0]);
+        maxenergy = 0;
     }
 
     private void moveAbsolute(int pos){
@@ -179,8 +191,6 @@ public class ThunderCats implements AgentProgram {
         actualPercept[wb] = (Boolean)p.getAttribute(this.language.getPercept(wb));
         actualPercept[wl] = (Boolean)p.getAttribute(this.language.getPercept(wl));
 
-        //actualPercept[goal] = (Boolean)p.getAttribute(this.language.getPercept(goal));
-        //TODO: No se me ocurre que hacer con fail
         actualPercept[fail] = (Boolean)p.getAttribute(this.language.getPercept(fail));
 
         actualPercept[af] = (Boolean)p.getAttribute(this.language.getPercept(af));
@@ -190,6 +200,7 @@ public class ThunderCats implements AgentProgram {
         actualPercept[al] = (Boolean)p.getAttribute(this.language.getPercept(al));*/
 
         actualPercept[res] = (Boolean)p.getAttribute(this.language.getPercept(res));
+        energylv = (int) p.getAttribute(ENERGY_LEVEL);
 
         if(actualPercept[fail]){
             init();
@@ -205,8 +216,7 @@ public class ThunderCats implements AgentProgram {
             }
         }
         energylv = (int) p.getAttribute(ENERGY_LEVEL);
-
-        //if(actualPercept[fail]) comands.clear(); //TODO: No se si dejar esto xD
+        if(maxenergy < energylv) maxenergy = energylv; //Por el return energylv en este punto es el maximo posible
 
         /* Creacion del grafo */
 
@@ -214,7 +224,7 @@ public class ThunderCats implements AgentProgram {
             aux = new Vector<>(4);
             /* Como la percepcion es relativa a la direccion del agente, pero el grafo se construye con respecto a las coordenadas,
              *  es necesario revisar a que corresponde la percepcion con respecto al tablero. */
-            for(int i = wl; i >= wf; i--){
+            for(int i = wf; i <= wl; i++){
                 if(!actualPercept[i]){
                     switch ((direction + i)%4){
                         case FRONT:
@@ -246,7 +256,7 @@ public class ThunderCats implements AgentProgram {
 
         /*Busca la fuente de comida mas cercana cuando este en niveles criticos */
 
-        if(energylv < 15 && !food.isEmpty()){
+        if(energylv < maxenergy*0.4 && !food.isEmpty()){
             if(!foodPath.hasNext()) foodPath = new DirectedPath(goTo(food));
             moveAbsolute(foodPath.getAction());
         }
@@ -255,7 +265,7 @@ public class ThunderCats implements AgentProgram {
 
         if(actualPercept[af]){
             if(comands.isEmpty() && !explorationPath.hasNext()){
-                stack.remove(coordinate); // No se si esta sea la mejor forma de de remover los visitados ...
+                stack.remove(coordinate); // No se si esta sea la mejor forma de remover los visitados ...
                 explorationPath.reset(goTo(stack));
             }
             moveAbsolute(explorationPath.getAction());
@@ -296,12 +306,12 @@ public class ThunderCats implements AgentProgram {
             }
         }
 
-        /* SI no tiene nada mas que hacer explore xD */
+        /* Si no tiene nada mas que hacer explore xD */
 
         if(comands.isEmpty()){
             if(!explorationPath.hasNext()){
                 stack.remove(coordinate); // No se si esta sea la mejor forma de de remover los visitados ...
-                explorationPath.reset(goTo(stack));
+                    explorationPath.reset(goTo(stack));
             }
             moveAbsolute(explorationPath.getAction());
         }
@@ -331,7 +341,8 @@ public class ThunderCats implements AgentProgram {
         direction = FRONT;
         coordinate = new Coordinate(0, 0);
         food = new HashSet<>();
-        graph = new HashMap<>();
+        badfood = new HashSet<>();
+        graph = new LinkedHashMap<>();
         stack = new HashSet<>();
         explorationPath = new DirectedPath(new int[0]);
         foodPath = new DirectedPath(new int[0]);

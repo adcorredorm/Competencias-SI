@@ -43,12 +43,12 @@ public class MultiTeseoEaterMain {
 	    Labyrinth.DEFAULT_SIZE = 15;
 	    
 	    Agent agent1 = new Agent(teseo[thundercats]);
-	    Agent agent2 = new Agent(teseo[retoricos]);
+	    Agent agent2 = new Agent(teseo[rexes]);
 	    
 	    //Agent agent3 = new Agent(p3);
 	    Vector<Agent> agent = new Vector<Agent>();
 	    agent.add(agent1);
-	    agent.add(agent2);
+	    //agent.add(agent2);
 //	    Agent agent = new Agent( new RandomReflexTeseoAgentProgram( getLanguage() ) );
 	    MultiTeseoEaterMainFrame frame = new MultiTeseoEaterMainFrame( agent, getLanguage() );
 	    frame.setVisible(true); 

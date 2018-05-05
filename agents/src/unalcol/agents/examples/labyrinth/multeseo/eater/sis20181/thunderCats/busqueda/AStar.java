@@ -1,6 +1,7 @@
 package unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.busqueda;
 
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.busqueda.DataStructures.AStarBusqueda;
+import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.busqueda.DataStructures.AStarBusquedaOrden;
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.busqueda.DataStructures.ColeccionBusqueda;
 
 public class AStar<T> extends Busqueda<T>{
@@ -14,7 +15,7 @@ public class AStar<T> extends Busqueda<T>{
 
     @Override
     public ColeccionBusqueda<T> coleccion(){
-        return new AStarBusqueda<T>(100, heuristica);
+        return new AStarBusqueda<>(10, heuristica);
     }
 
 }
