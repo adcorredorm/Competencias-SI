@@ -88,15 +88,15 @@ public class MultiTeseoEaterLabyrinth extends MultiAgentLabyrinth{
 	        case 4: // eat
 	          if ( ( (Boolean) p.getAttribute(LabyrinthUtil.RESOURCE[0])).booleanValue()) {
 	            // @TODO: Update the perception goodness
-	            //structure[x][y] |= (1<<15);
+	            structure[x][y] |= (1<<15);
 	            int bit_flag = (1<<10);
 	            //if( (structure[x][y] & bit_flag) == bit_flag ){
 	              //System.out.println("Eating good food...");
 	              agent_energy_level[i] = Math.min( agent_energy_level[i] + INC_ENERGY_LEVEL, MAX_ENERGY_LEVEL );
-	            /*}else{
-	              System.out.println("Eating bad food...");
-	              agent_energy_level[i] = Math.max( agent_energy_level[i] - DEC_ENERGY_LEVEL, 0 );
-	            }*/
+	            //}else{
+	              //System.out.println("Eating bad food...");
+	              //agent_energy_level[i] = Math.max( agent_energy_level[i] - DEC_ENERGY_LEVEL, 0 );
+	            //}
 	          }
 	          else {
 	            msg = SimpleView.ERROR +

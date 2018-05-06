@@ -15,7 +15,7 @@ public class AStar<T> extends Busqueda<T>{
 
     @Override
     public ColeccionBusqueda<T> coleccion(){
-        return new AStarBusqueda<>(10, heuristica);
+        return new AStarBusquedaOrden<>(10, heuristica);
     }
 
 }
