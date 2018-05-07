@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="plugins">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/reflection/plugins/pluginB.jar!/" />
+      <root url="jar://$PROJECT_DIR$/reflection/plugins/pluginA.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

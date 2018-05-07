@@ -7,7 +7,7 @@ import unalcol.agents.examples.labyrinth.LabyrinthDrawer;
 import unalcol.agents.examples.labyrinth.multeseo.eater.SIS20181.Retoricos.MiAgente;
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.FutureUN.TeseoUNfuture;
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.RexeSiLaberinto.MyAgent;
-import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.UNfail.UNfailAgentProgram;
+//import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.UNfail.UNfailAgentProgram;
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.mandingas.Mandingas_agent;
 import unalcol.agents.examples.labyrinth.multeseo.eater.sis20181.thunderCats.ThunderCats;
 import unalcol.agents.simulate.util.SimpleLanguage;
@@ -35,7 +35,7 @@ public class MultiTeseoEaterMain {
 	    teseo[retoricos] = new MiAgente( getLanguage() );
 	    teseo[rexes] = new MyAgent( getLanguage() );
 	    teseo[thundercats] = new ThunderCats( getLanguage() );
-	    teseo[unfail] = new UNfailAgentProgram( );
+	    //teseo[unfail] = new UNfailAgentProgram( );
 
 
 	    LabyrinthDrawer.DRAW_AREA_SIZE = 1000;
