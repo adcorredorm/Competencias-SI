@@ -12,6 +12,7 @@ import java.util.*;
 
 //TODO Rexes (Prioriza a la derecha)
 //TODO ¿Vale la pena calcular el costo de avanzar y rotar?
+//TODO quitar el TODO de rexes antes de la competencia
 
 /* Cambios Hechos
 * Modificacion de la Heuristica Manhattan (Manhattan)
